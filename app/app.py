@@ -39,18 +39,8 @@ async def run_autonomous_mission(user_query: str, status_container, messages_con
                 mcp_tools_response = await session.list_tools()
                 openai_tools = []
 
-                for tool in mcp_tools_response.tools:
-                    schema_dict = dict(tool.inputSchema)
-                    schema_dict.pop('$schema', None)
-                    
-                    openai_tools.append({
-                        "type": "function",
-                        "function": {
-                            "name": tool.name,
-                            "description": tool.description,
-                            "parameters": schema_dict
-                        }
-                    })
+                # TODO: Convert MCP tools (mcp_tools_response) to OpenAI format (openai_tools)
+                # Loop mcp_tools_response.tools and append to openai_tools
                 
                 status_container.write(f"🔌 Connected to MCP. Loaded {len(openai_tools)} tools.")
                 
@@ -71,14 +61,13 @@ Do NOT just restate the plan. Actually perform the research by calling tools."""
                     status_container.write(f"🧠 Agent Thinking (Step {step+1}/{max_steps})...")
                     
                     # Force a final answer without tools if we hit the last step
-                    current_tool_choice = "none" if step == max_steps - 1 else "auto"
                     if step == max_steps - 1:
                         status_container.write("⚠️ Final step reached. Forcing final synthesis.")
-                        messages.append({
-                            'role': 'user',
-                            'content': 'Final step reached. Synthesize a final answer.'
-                        })
-                        openai_tools=None
+                        
+                        # TODO: Make message clear that this is final step. LLM should synthesize final answer now.
+                        messages.append(...)
+                        # TODO: Make sure that there will be no tool for LLm to call anymore
+                        current_tool_choice = ...
                     
                     response = sync_client.chat.completions.create(
                         model=MODEL_NAME,

@@ -51,12 +51,18 @@ def google_search(query: str, num: int = 10) -> str:
         if not results:
             return f"No results found for '{query}'."
 
-        output = f"Google Search Results for '{query}':\n\n"
-        for i, res in enumerate(results, 1):
-            title = res.get("title", "No Title")
-            link = res.get("link", "#")
-            snippet = res.get("snippet", "No snippet available.")
-            output += f"{i}. {title}\n   Link: {link}\n   Snippet: {snippet}\n\n"
+        output = ''
+        for i, res in enumerate(results):
+            # TODO: Create output prompt from search result
+            print(res.get('title'))
+            """title"""
+            print(res.get('link', '#'))
+            """link"""
+            print(res.get('snippet', 'No snippet available.'))
+            """snippet"""
+            
+
+        
         
         return output
 
@@ -91,22 +97,9 @@ def visit_url(url: str, query: str) -> str:
         # Context Compression Logic
         if not client:
             return "Error: GROQ_API_KEY not configured for context compression."
-            
-        system_prompt = """
-        You are a Context Compressor for a RAG pipeline.
-        Extract ONLY the exact sentences or phrases from the document that are directly relevant to answering the user's query.
-        Do NOT summarize. Do NOT add new information.
-        If no relevant information is found, output "No relevant context found."
-        """
-        llm_response = client.chat.completions.create(
-            model=MODEL_NAME,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": f"Query: {query}\n\nDocument:\n{document}"},
-            ],
-            temperature=0,
-        )
-        return llm_response.choices[0].message.content
+        
+        # TODO: Implement Context Compression Logic. Use `LLM` to compress the `document` based on `query``
+        return '(Edit this) Compressed Context'
 
     except Exception as e:
         return f"Error visiting URL {url}: {str(e)}"

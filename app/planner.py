@@ -56,10 +56,8 @@ def call_planner(sync_client, model_name: str, messages: list):
     msg = response.choices[0].message
     
     # Check if the planner wants to call start_research
-    if msg.tool_calls:
-        for tc in msg.tool_calls:
-            if tc.function.name == "start_research":
-                args = json.loads(tc.function.arguments)
-                return msg.content, args.get("research_plan", "")
+    # TODO: If "start_research" is in the response, return the research plan
+    # research_plan = ...
+    # return msg.content, research_plan
     
     return msg.content, None
