@@ -38,6 +38,7 @@ async def run_autonomous_mission(user_query: str, status_container, messages_con
                 # Fetch tools from the MCP server
                 mcp_tools_response = await session.list_tools()
                 openai_tools = []
+                current_tool_choice = 'auto'
 
                 # TODO: Convert MCP tools (mcp_tools_response) to OpenAI format (openai_tools)
                 # Loop mcp_tools_response.tools and append to openai_tools
